@@ -42,6 +42,7 @@ class Edger:
 
     # Grayscale
     def grayscale(self, pic):
+        # GS value = .3*red value + .59*green value + .11 * blue value
         return None
 
 
