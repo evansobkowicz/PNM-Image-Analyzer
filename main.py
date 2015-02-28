@@ -14,9 +14,10 @@ class Edger:
     # Initialize Object
     def __init__(self, file):
         self.file_path = file
+        self.img_type = None
         self.height = 0
         self.width = 0
-        self.largest_vale = 0
+        self.largest_value = 0
         self.img_data = list()
         self.img = None
 
@@ -27,9 +28,8 @@ class Edger:
 
     # HELPER METHODS
     # Image Size Parser
-    def img_size(self, data):
-        sizes = data.split()
-        return int(sizes[0]), int(sizes[1])
+    def img_size(self, width, height):
+        return int(self.cleaner(width)), int(self.cleaner(height))
 
     # String Cleaner - Strip new line and white space
     def cleaner(self, s):
@@ -41,37 +41,42 @@ class Edger:
         path = "img/" + self.file_path
         f = open(path, "r")
         # TODO: Handle Comments In Header
-        img_type = self.cleaner(f.readline())                   # Line 1: Image Type
-        self.width, self.height = self.img_size(f.readline())   # Line 2/3: Image Width/Height
-        self.largest_vale = self.cleaner(f.readline())          # Line 4: Largest Color Value
-        raw_data = f.read().strip(' ').splitlines()
+        self.img_type = self.cleaner(f.readline())                                 # Line 1: Image Type
+        self.width, self.height = self.img_size(f.readline(), f.readline())   # Line 2/3: Image Width/Height
+        self.largest_value = self.cleaner(f.readline())                       # Line 4: Largest Color Value
+        raw_data = f.read().split(' ')
         data = [[0 for x in range(self.height)] for x in range(self.width)]
-        if img_type == 'P2':
+        if self.img_type.find('P2') != -1:
             # Grayscale Image
-            for i in range(self.width * self.height):
-                clean_line = self.cleaner(f.readline())
-                # data.append(clean_line)
-        elif img_type == 'P3':
+            for x in range(self.width):
+                for y in range(self.height):
+                    data[x][y] = int(raw_data.pop(0))
+        elif self.img_type.find('P3') != -1:
             # RGB Image
-            for i in range(self.width):
-                for j in range(self.height):
-                    color = [raw_data.pop(0), raw_data.pop(0), raw_data.pop(0)]
-                    data[i][j] = color
+            for x in range(self.width):
+                for y in range(self.height):
+                    color = [int(raw_data.pop(0)), int(raw_data.pop(0)), int(raw_data.pop(0))]
+                    data[x][y] = color
         else:
             print 'ERROR: Invalid File Type.'
+        print "Potential Error...", len(raw_data)
         f.close()
         self.img_data = data
-        print self.img_data
         print 'Finished Loading File...'
 
 
     # Create Image
     def create_image(self):
         self.img = Image(Point(self.width/2, self.height/2), self.width, self.height)
-        for x in range(self.width * self.height):
-            # for y in range(self.height):
-            color = int(self.img_data[x])
-            self.img.setPixel(x, x, color_rgb(color, color, color))
+        for x in range(self.width):
+            for y in range(self.height):
+                if self.img_type.find('P2') != -1:
+                    raw_color = self.img_data[x][y]
+                    color = color_rgb(raw_color, raw_color, raw_color)
+                elif self.img_type.find('P3') != -1:
+                    rgb = self.img_data[x][y]
+                    color = color_rgb(rgb[0], rgb[1], rgb[2])
+                self.img.setPixel(x, y, color)
 
     # Grayscale
     def grayscale(self, pic):
