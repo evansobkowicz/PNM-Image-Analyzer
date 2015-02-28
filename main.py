@@ -16,6 +16,7 @@ class Edger:
         self.file_path = file
         self.height = 0
         self.width = 0
+        self.largest_vale = 0
         self.img_data = list()
         self.img = None
 
@@ -39,17 +40,28 @@ class Edger:
         print 'Loading File...'
         path = "img/" + self.file_path
         f = open(path, "r")
-        img_type = self.cleaner(f.readline())
-        data = list()
-        if img_type == 'P2' or img_type == 'P3':
-            self.width, self.height = self.img_size(f.readline())
+        # TODO: Handle Comments In Header
+        img_type = self.cleaner(f.readline())                   # Line 1: Image Type
+        self.width, self.height = self.img_size(f.readline())   # Line 2/3: Image Width/Height
+        self.largest_vale = self.cleaner(f.readline())          # Line 4: Largest Color Value
+        raw_data = f.read().strip(' ').splitlines()
+        data = [[0 for x in range(self.height)] for x in range(self.width)]
+        if img_type == 'P2':
+            # Grayscale Image
             for i in range(self.width * self.height):
                 clean_line = self.cleaner(f.readline())
-                data.append(clean_line)
+                # data.append(clean_line)
+        elif img_type == 'P3':
+            # RGB Image
+            for i in range(self.width):
+                for j in range(self.height):
+                    color = [raw_data.pop(0), raw_data.pop(0), raw_data.pop(0)]
+                    data[i][j] = color
         else:
             print 'ERROR: Invalid File Type.'
         f.close()
         self.img_data = data
+        print self.img_data
         print 'Finished Loading File...'
 
 
