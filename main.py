@@ -1,8 +1,13 @@
 # Project 1
 # Evan Sobkowicz
+# Date: 2/27/15
 
 from graphics import *
 
+
+# Purpose
+# Input/Params
+# Output/Return
 
 class Edger:
 
@@ -63,6 +68,7 @@ class Edger:
 
 
     # Analyze Edges (distance of color value calculations)
+    # Use floats, add .5 to numbers to avoid improper rounding
     def analyze_edges(self, pic):
         return None
 
