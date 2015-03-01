@@ -4,10 +4,10 @@
 
 from graphics import *
 
-
 # Purpose
 # Input/Params
 # Output/Return
+
 
 class Edger:
 
@@ -24,9 +24,9 @@ class Edger:
         # Run the Program
         self.read_file()
         self.create_image()
+        self.grayscale()
         self.display_image()
 
-    # HELPER METHODS
     # Image Size Parser
     def img_size(self, width, height):
         return int(self.cleaner(width)), int(self.cleaner(height))
@@ -41,20 +41,22 @@ class Edger:
         path = "img/" + self.file_path
         f = open(path, "r")
         # TODO: Handle Comments In Header
-        self.img_type = self.cleaner(f.readline())                                 # Line 1: Image Type
+        self.img_type = self.cleaner(f.readline())                            # Line 1: Image Type
         self.width, self.height = self.img_size(f.readline(), f.readline())   # Line 2/3: Image Width/Height
         self.largest_value = self.cleaner(f.readline())                       # Line 4: Largest Color Value
         raw_data = f.read().split(' ')
         data = [[0 for x in range(self.height)] for x in range(self.width)]
         if self.img_type.find('P2') != -1:
             # Grayscale Image
-            for x in range(self.width):
-                for y in range(self.height):
+            print 'Processing Grayscale (P2) Image...'
+            for y in range(self.height):
+                for x in range(self.width):
                     data[x][y] = int(raw_data.pop(0))
         elif self.img_type.find('P3') != -1:
             # RGB Image
-            for x in range(self.width):
-                for y in range(self.height):
+            print 'Processing RGB (P3) Image...'
+            for y in range(self.height):
+                for x in range(self.width):
                     color = [int(raw_data.pop(0)), int(raw_data.pop(0)), int(raw_data.pop(0))]
                     data[x][y] = color
         else:
@@ -67,6 +69,7 @@ class Edger:
 
     # Create Image
     def create_image(self):
+        print 'Creating Image...'
         self.img = Image(Point(self.width/2, self.height/2), self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
@@ -79,9 +82,14 @@ class Edger:
                 self.img.setPixel(x, y, color)
 
     # Grayscale
-    def grayscale(self, pic):
-        # GS value = .3*red value + .59*green value + .11 * blue value
-        return None
+    def grayscale(self):
+        if self.img_type.find('P3') != -1:
+            print 'Grayscaling P3 Image...'
+            for x in range(self.width):
+                for y in range(self.height):
+                    color = self.img.getPixel(x, y)
+                    gs = (0.3 * color[0]) + (0.59 * color[1]) + (0.11 * color[2])
+                    self.img.setPixel(x, y, color_rgb(gs, gs, gs))
 
 
     # Analyze Edges (distance of color value calculations)
@@ -94,6 +102,8 @@ class Edger:
     def display_image(self):
         win = GraphWin('Image', self.width, self.height)
         self.img.draw(win)
+        print 'Image Displayed...'
+        print '==> Click on the image to close it'
         win.getMouse()
         win.close()
 
