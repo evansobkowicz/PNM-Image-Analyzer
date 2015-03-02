@@ -136,10 +136,7 @@ class Edger:
                     top = self.img.getPixel(x, y + 1)
                     bottom = self.img.getPixel(x, y - 1)
                     edge = math.sqrt(math.pow(left[0] - right[0], 2) + math.pow(top[0] - bottom[0], 2))
-                    if edge > 40.0:
-                        self.edged_img.setPixel(x, y, color_rgb(255, 255, 255))
-                    else:
-                        self.edged_img.setPixel(x, y, color_rgb(0, 0, 0))
+                    self.edged_img.setPixel(x, y, color_rgb(edge, edge, edge))
 
     # Display an image to the user
     # Input: [IMAGE] the image to be displayed
@@ -172,7 +169,10 @@ class Edger:
 
 # PROJECT 1 MAIN
 def main():
-    e = Edger('rainbow.pnm')  # Change Image Path Here
+    # Test Images should be located in the /img directory
+    # e1 = Edger('rainbow.pnm')  # Test Image 1
+    e2 = Edger('buildingGS.pnm')  # Test Image 2
+
 
 
 # Run the program!
