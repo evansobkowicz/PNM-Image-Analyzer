@@ -1,6 +1,6 @@
 # Project 1
 # Evan Sobkowicz
-# Date: 2/27/15
+# Date: 3/1/15
 
 
 # Import Libraries for graphics, math, and timestamps
@@ -172,7 +172,7 @@ class Edger:
 
 # PROJECT 1 MAIN
 def main():
-    e = Edger('rainbow.pnm')
+    e = Edger('rainbow.pnm')  # Change Image Path Here
 
 
 # Run the program!
