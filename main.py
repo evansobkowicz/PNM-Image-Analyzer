@@ -137,6 +137,7 @@ class Edger:
                     top = self.img.getPixel(x, y + 1)
                     bottom = self.img.getPixel(x, y - 1)
                     edge = math.sqrt(math.pow(left[0] - right[0], 2) + math.pow(top[0] - bottom[0], 2))
+                    # Set the calculated value on the edged image
                     self.edged_img.setPixel(x, y, color_rgb(edge, edge, edge))
 
     # Display an image to the user
@@ -174,7 +175,6 @@ def main():
     # e1 = Edger('rainbow.pnm')         # Test Image 1
     # e2 = Edger('buildingGS.pnm')      # Test Image 2
     e3 = Edger('veggies.pnm')           # Test Image 3
-
 
 
 # Run the program!
