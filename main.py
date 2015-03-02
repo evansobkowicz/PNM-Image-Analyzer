@@ -67,6 +67,7 @@ class Edger:
         self.width, self.height = self.img_size(f.readline(), f.readline())   # Line 2/3: Image Width/Height
         self.largest_value = self.cleaner(f.readline())                       # Line 4: Largest Color Value
         raw_data = f.read().split(' ')
+        # Create image data matrix to store values
         data = [[0 for x in range(self.height)] for x in range(self.width)]
         if self.img_type.find('P2') != -1:
             # Grayscale Image
@@ -170,8 +171,9 @@ class Edger:
 # PROJECT 1 MAIN
 def main():
     # Test Images should be located in the /img directory
-    # e1 = Edger('rainbow.pnm')  # Test Image 1
-    e2 = Edger('buildingGS.pnm')  # Test Image 2
+    # e1 = Edger('rainbow.pnm')         # Test Image 1
+    # e2 = Edger('buildingGS.pnm')      # Test Image 2
+    e3 = Edger('veggies.pnm')           # Test Image 3
 
 
 
