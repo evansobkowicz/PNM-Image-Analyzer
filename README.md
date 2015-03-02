@@ -1,5 +1,5 @@
 # PNM-Image-Analyzer
-COMP 202 Project 1
+COMP 202 Project 1  -  Evan Sobkowicz
 
-Python Files:
-* main.py
+### Instructions
+* Run main.py with test image entered in the main() function at the bottom of the file.
